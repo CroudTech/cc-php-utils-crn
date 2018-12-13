@@ -1,0 +1,13 @@
+clone:
+
+  git:
+    image: plugins/git
+    tags: true
+
+pipeline:
+  test:
+    image: croudtech/webapp:2.0.0
+    commands: 
+      - cd src && /usr/bin/composer install --no-interaction
+      - vendor/bin/phpunit -c phpunit.xml
+    secrets: [ SLACK_WEBHOOK ]

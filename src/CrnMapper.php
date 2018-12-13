@@ -94,6 +94,14 @@ class CrnMapper
         return $map['aliases'][$serviceName];
     }
 
+    public function urlFromCrn($crn, $type)
+    {
+        $method = printf('get%sDomain', ucfirst($type));
+        $pieces = explode(':', $crn);
+        return $this->{$method}($this->getMap($pieces[0]), $pieces[1]) 
+            . implode('/', array_slice($pieces, 2));
+    }
+
     /**
      * Gets Gets Public URL from Crn
      *
@@ -102,9 +110,7 @@ class CrnMapper
      */
     public function publicUrlFromCrn($crn)
     {
-        $pieces = explode(':', $crn);
-        return $this->getPublicDomain($this->getMap($pieces[0]), $pieces[1]) 
-        . implode('/', array_slice($pieces, 2));
+        return $this->urlFromCrn($crn, 'Public');
     }
 
      /**
@@ -115,10 +121,7 @@ class CrnMapper
      */
     public function internalUrlFromCrn($crn)
     {
-          $pieces = explode(':', $crn);
-        return $this->getInternalDomain($this->getMap($pieces[0]), $pieces[1]) 
-        . implode('/', array_slice($pieces, 2));
-        // return $this->getUrlFromCrn($crn, 'Internal');
+        return $this->urlFromCrn($crn, 'Internal');
     }
 
     /**
@@ -130,6 +133,9 @@ class CrnMapper
     public function createCrn(array $entityParams)
     {
         return collect($entityParams)->reduce(function($str, $row){
+            if (!isset($row['entity'] ) || !isset($row['id'])) {
+                throw new \Exception('Incorrect paramter definition');
+            }
             return $str . ':' . $row['entity'] . ':' . $row['id'];
         }, $this->systemId . ':' . $this->serviceName);
     }
