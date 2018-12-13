@@ -6,8 +6,6 @@ clone:
 
 pipeline:
   test:
-    image: croudtech/webapp:2.0.0
+    image: phpunit/phpunit
     commands: 
-      - cd src && /usr/bin/composer install --no-interaction
-      - vendor/bin/phpunit -c phpunit.xml
-    secrets: [ SLACK_WEBHOOK ]
+      - docker run -v $(pwd):/src --rm phpunit/phpunit run
