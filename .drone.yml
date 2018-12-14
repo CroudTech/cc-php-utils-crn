@@ -5,7 +5,8 @@ clone:
     tags: true
 
 pipeline:
-  test:
-    image: phpunit/phpunit
-    commands: 
-      - docker run -v $(pwd):/src --rm phpunit/phpunit run
+  build:
+    image: epcallan/php7-testing-phpunit:7.1-phpunit5
+    commands:
+      - composer install
+      - phpunit
