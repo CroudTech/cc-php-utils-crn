@@ -34,8 +34,7 @@ class CrnMapper
      */
     protected function getMap(string $systemId)
     {
-        if (!isset($this->serviceMap['systems'][$systemId]))
-        {
+        if (!isset($this->serviceMap['systems'][$systemId])) {
             throw new \Exception('Invalid System ID');
         }
 
@@ -96,7 +95,7 @@ class CrnMapper
 
     public function urlFromCrn($crn, $type)
     {
-        $method = printf('get%sDomain', ucfirst($type));
+        $method = sprintf('get%sDomain', ucfirst($type));
         $pieces = explode(':', $crn);
         return $this->{$method}($this->getMap($pieces[0]), $pieces[1]) 
             . implode('/', array_slice($pieces, 2));

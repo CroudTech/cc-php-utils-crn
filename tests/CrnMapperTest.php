@@ -58,7 +58,6 @@ class CrnMapperTest extends TestCase
         $this->assertEquals($expectedCrn, $this->mapper->createCrn($params));
     }
 
-
     function testNestedSimpleCrn()
     {
         $params = [
@@ -73,5 +72,51 @@ class CrnMapperTest extends TestCase
         ];
         $expectedCrn = 'a7c5310f-2e38-49b4-99b7-a57482b0aacd:test-service:tasks:cdd4bb32-258e-40d7-8255-4e2e1526e60c:files:a7c5310f-2e38-49b4-99b7-a57482b0aacd';
         $this->assertEquals($expectedCrn, $this->mapper->createCrn($params));
+    }
+
+    function testInvalidSystem()
+    {
+        $crn = 'a7c5310f-2e38-49b4-99b7-a57482b032213d:file-service:tasks:a7c5310f-2e38-49b4-99b7-a57482b0aacd:files:cdd4bb32-258e-40d7-8255-4e2e1526e132s';
+        $expectedMessage = 'Invalid System ID';
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage($expectedMessage);
+        $this->mapper->publicUrlFromCrn($crn);
+    }
+
+    function testInvalidAlias()
+    {
+        $crn = 'a7c5310f-2e38-49b4-99b7-a57482b0aacd:file-servicesss:files:cdd4bb32-258e-40d7-8255-4e2e1526e60c';
+        $expectedMessage = 'Service alias not found';
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage($expectedMessage);
+        $this->mapper->internalUrlFromCrn($crn);
+    }
+
+    public function testInvalidCrnEntity()
+    {
+        $params = [
+            [
+                'entitysad' => 'files',
+                'id' => 'cdd4bb32-258e-40d7-8255-4e2e1526e60c',
+            ],
+        ];
+        $expectedMessage = 'Incorrect paramter definition';
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage($expectedMessage);
+        $this->mapper->createCrn($params);
+    }
+
+    public function testInvalidCrnId()
+    {
+        $params = [
+            [
+                'entitys' => 'files',
+                'idsss' => 'cdd4bb32-258e-40d7-8255-4e2e1526e60c',
+            ],
+        ];
+        $expectedMessage = 'Incorrect paramter definition';
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage($expectedMessage);
+        $this->mapper->createCrn($params);
     }
 }
