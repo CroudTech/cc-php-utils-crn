@@ -9,4 +9,4 @@ pipeline:
     image: epcallan/php7-testing-phpunit:7.1-phpunit5
     commands:
       - composer install
-      - phpunit
+      - ./vendor/bin/phpunit
