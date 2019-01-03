@@ -1,0 +1,12 @@
+clone:
+
+  git:
+    image: plugins/git
+    tags: true
+
+pipeline:
+  build:
+    image: epcallan/php7-testing-phpunit:7.1-phpunit5
+    commands:
+      - composer install
+      - ./vendor/bin/phpunit
