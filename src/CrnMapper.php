@@ -17,13 +17,13 @@ class CrnMapper
         $this->serviceName = getenv('SERVICE_NAME');
         $this->serviceMap = json_decode(getenv('SERVICE_MAP'), true);
 
-        // if (!$this->systemId || 
-        //     $this->internalRoutingFormat || 
-        //     $this->serviceName ||
-        //     (json_last_error() && json_last_error() !== JSON_ERROR_NONE)
-        //     ) {
-        //     throw new \Exception('Invalid Service Map');
-        // }
+        if (!$this->systemId || 
+            $this->internalRoutingFormat || 
+            $this->serviceName ||
+            (json_last_error() && json_last_error() !== JSON_ERROR_NONE)
+            ) {
+            throw new \Exception('Invalid Service Map');
+        }
     }
 
     /**
