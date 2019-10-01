@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/src
+    environment:
+      - PHP_ENVIRONMENT=development
+      - APP_DEBUG=true
+      - APP_ENV=develop
+      - INTERNAL_ROUTING_FORMAT=http://<serviceName>.<serviceNamespace>.svc.cluster.local
+      - SERVICE_MAP={"systems":{"a7c5310f-2e38-49b4-99b7-a57482b0aacd":{"domain":"https://<serviceName>.example.com","namespace":"stg-v3-tennant","aliases":{"activity-log":"activity-log-django",    "file-service":"files","user-service":"user-service-django","test-service":"test-service-django"}}}}
+      - SERVICE_NAME=test-service
+      - SYSTEM_ID=a7c5310f-2e38-49b4-99b7-a57482b0aacd

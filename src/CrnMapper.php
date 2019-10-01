@@ -16,14 +16,6 @@ class CrnMapper
         $this->internalRoutingFormat = getenv('INTERNAL_ROUTING_FORMAT');
         $this->serviceName = getenv('SERVICE_NAME');
         $this->serviceMap = json_decode(getenv('SERVICE_MAP'), true);
-
-//         if (!$this->systemId || 
-//             $this->internalRoutingFormat || 
-//             $this->serviceName ||
-//             (json_last_error() && json_last_error() !== JSON_ERROR_NONE)
-//             ) {
-//             throw new \Exception('Invalid Service Map');
-//         }
     }
 
     /**
@@ -52,7 +44,7 @@ class CrnMapper
      */
     protected function getPublicDomain($map, $serviceName)
     {
-        $suffix = strpos($map['domain'], -1) !== '/' ? '/' : '';
+        $suffix = strpos((string) $map['domain'], -1) !== '/' ? '/' : '';
         return str_replace('<serviceName>', $serviceName, $map['domain']) . $suffix;
     }
 
@@ -71,7 +63,7 @@ class CrnMapper
             throw new \Exception('Service namespace not found');
         }
 
-        $suffix = strpos($this->internalRoutingFormat, -1) !== '/' ? '/' : '';
+        $suffix = strpos((string) $this->internalRoutingFormat, -1) !== '/' ? '/' : '';
 
         return str_replace('<serviceName>', $this->getAlias($map, $serviceName), 
             str_replace('<serviceNamespace>', $map['namespace'], $this->internalRoutingFormat))
