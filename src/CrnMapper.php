@@ -44,7 +44,7 @@ class CrnMapper
      */
     protected function getPublicDomain($map, $serviceName)
     {
-        $suffix = strpos((string) $map['domain'], -1) !== '/' ? '/' : '';
+        $suffix = substr($map['domain'], -1) !== '/' ? '/' : '';
         return str_replace('<serviceName>', $serviceName, $map['domain']) . $suffix;
     }
 
@@ -63,7 +63,7 @@ class CrnMapper
             throw new \Exception('Service namespace not found');
         }
 
-        $suffix = strpos((string) $this->internalRoutingFormat, -1) !== '/' ? '/' : '';
+        $suffix = substr($this->internalRoutingFormat, -1) !== '/' ? '/' : '';
 
         return str_replace('<serviceName>', $this->getAlias($map, $serviceName), 
             str_replace('<serviceNamespace>', $map['namespace'], $this->internalRoutingFormat))
